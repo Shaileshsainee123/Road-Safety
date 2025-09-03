@@ -20,6 +20,7 @@ import {
   Tab,
   Paper
 } from "@mui/material";
+import { __formatDate2 } from "../../utils/api/constantfun";
 
 
 
@@ -55,7 +56,7 @@ export default function AssetMasterForm() {
       headerName: "Date of Birth",
       width: 150,
       headerClassName: "blue-header",
-      renderCell: (params) => <span>{__formatDate(params.row?.DOB)}</span>,
+      renderCell: (params) => <span>{__formatDate2(params.row?.DOB)}</span>,
     },
     {
       field: "doj",
@@ -139,7 +140,7 @@ export default function AssetMasterForm() {
               <div className="d-flex flex-column">
                 {/* Edit Action */}
                 <div
-                  className="font-normal text-base px-2 py-3 cursor-pointer border border-bottom-1"
+                  className="font-normal text-base px-2 py-2 cursor-pointer border border-bottom-1"
                   onClick={() => {
                     console.log(`Edit button clicked`, params.row?._id);
                   }}
@@ -149,7 +150,7 @@ export default function AssetMasterForm() {
 
                 {/* Delete Action  */}
                 <div
-                  className="font-normal text-base px-2 py-3 cursor-pointer border-bottom-1"
+                  className="font-normal text-base px-2 py-2 cursor-pointer"
                   onClick={() => {
                     console.log(`Delete button clicked`, params.row?._id);
                   }}
@@ -251,12 +252,12 @@ export default function AssetMasterForm() {
         return (
           <>
             <div
-              className="flex items-center justify-center w-6 h-6 cursor-pointer"
+              className="flex items-center justify-center cursor-pointer"
               data-bs-toggle="dropdown"
             >
               <MoreVertIcon
-                sx={{ color: "#23538f", cursor: "pointer" }}
-                className="h-100 w-100"
+                sx={{ color:"gray", cursor: "pointer", display:"flex" , justifyContent: "center" ,alignItems:"center"}}
+                className="h-6 w-6"
               />
             </div>
 
@@ -271,7 +272,7 @@ export default function AssetMasterForm() {
               <div className="d-flex flex-column">
                 {/* Edit Action */}
                 <span
-                  className="actionType"
+                  className="font-normal text-base px-2 py-2 cursor-pointer border border-bottom-1"
                   onClick={() => {
                     console.log(`Edit button clicked`, params.row?._id);
                   }}
@@ -281,7 +282,7 @@ export default function AssetMasterForm() {
 
                 {/* Delete Action */}
                 <span
-                  className="actionType border-bottom-0"
+                  className="font-normal text-base px-2 py-2 cursor-pointer"
                   onClick={() => {
                     console.log(`Delete button clicked`, params.row?._id);
                   }}
