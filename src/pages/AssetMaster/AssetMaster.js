@@ -5,7 +5,8 @@ import { __getCommenApiDataList } from "../../utils/api/commonApi";
 import { toast } from "react-toastify";
 import { __formatDate } from "../../utils/function";
 import LoadingScreen from "../../components/Loading/LoadingScreen";
-
+import { DataGrid } from '@mui/x-data-grid';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   TextField,
   MenuItem,
@@ -16,10 +17,286 @@ import {
   Menu,
   Box,
   Tabs,
-  Tab
+  Tab,
+  Paper
 } from "@mui/material";
 
+
+
 export default function AssetMasterForm() {
+
+  // ====================== Individual Columns ======================
+  const individualColumns = [
+    {
+      field: "lookup_value",
+      headerName: "Parent Asset ID",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{params.row?.AssetTypeId?.lookup_value || "N/A"}</span>
+      ),
+    },
+    {
+      field: "AssetName",
+      headerName: "Asset Name",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.AssetName || "N/A"}</span>,
+    },
+    {
+      field: "Gender",
+      headerName: "Gender",
+      width: 120,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.Gender || "N/A"}</span>,
+    },
+    {
+      field: "dob",
+      headerName: "Date of Birth",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{__formatDate(params.row?.DOB)}</span>,
+    },
+    {
+      field: "doj",
+      headerName: "Date of Joining",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{__formatDate(params.row?.DateOfJoining)}</span>,
+    },
+    {
+      field: "bloodGroup",
+      headerName: "Blood Group",
+      width: 140,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.BloodGroup || "N/A"}</span>,
+    },
+    {
+      field: "reportingAsset",
+      headerName: "Reporting Asset",
+      width: 160,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.ReportingAssetID || "N/A"}</span>,
+    },
+    {
+      field: "designation",
+      headerName: "Designation",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{params.row?.DesignationTypeId?.lookup_value || "N/A"}</span>
+      ),
+    },
+    {
+      field: "department",
+      headerName: "Department",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{params.row?.DepartmentTypeId?.lookup_value || "N/A"}</span>
+      ),
+    },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{__formatDate(params.row?.createdAt)}</span>,
+    },
+    {
+      field: "updatedAt",
+      headerName: "Updated At",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{__formatDate(params.row?.updatedAt)}</span>,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      headerClassName: "blue-header",
+      width: 120,
+      renderCell: (params) => {
+        return (
+          <>
+            <div
+              className="flex items-center justify-center  cursor-pointer"
+              data-bs-toggle="dropdown"
+            >
+              <MoreVertIcon
+                sx={{ color:"gray", cursor: "pointer", display:"flex" , justifyContent: "center" ,alignItems:"center"}}
+                className="h-6 w-6"
+              />
+            </div>
+
+            {/* Dropdown Menu */}
+            <div
+              className="dropdown-menu border-0 rounded-3"
+              style={{
+                boxShadow:
+                  "rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px",
+              }}
+            >
+              <div className="d-flex flex-column">
+                {/* Edit Action */}
+                <div
+                  className="font-normal text-base px-2 py-3 cursor-pointer border border-bottom-1"
+                  onClick={() => {
+                    console.log(`Edit button clicked`, params.row?._id);
+                  }}
+                >
+                  Edit
+                </div>
+
+                {/* Delete Action  */}
+                <div
+                  className="font-normal text-base px-2 py-3 cursor-pointer border-bottom-1"
+                  onClick={() => {
+                    console.log(`Delete button clicked`, params.row?._id);
+                  }}
+                >
+                   Delete
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      },
+    }
+  ];
+
+  // ====================== Vehicle Columns ======================
+  const vehicleColumns = [
+    {
+      field: "parentAssetId",
+      headerName: "Parent Asset ID",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{params.row?.AssetTypeId?.lookup_value || "N/A"}</span>
+      ),
+    },
+    {
+      field: "RegistrationNumber",
+      headerName: "Registration No.",
+      width: 170,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{params.row?.RegistrationNumber || "N/A"}</span>
+      ),
+    },
+    {
+      field: "engineNo",
+      headerName: "Engine No.",
+      width: 170,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.EngineNumber || "N/A"}</span>,
+    },
+    {
+      field: "chassisNo",
+      headerName: "Chassis No.",
+      width: 170,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.ChassisNumber || "N/A"}</span>,
+    },
+    {
+      field: "Model",
+      headerName: "Model",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.Model || "N/A"}</span>,
+    },
+    {
+      field: "make",
+      headerName: "Make",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.Make || "N/A"}</span>,
+    },
+    {
+      field: "manufacturer",
+      headerName: "Manufacturer",
+      width: 170,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.Manufacturer || "N/A"}</span>,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      width: 120,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.Year || "N/A"}</span>,
+    },
+    {
+      field: "color",
+      headerName: "Color",
+      width: 120,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.Color || "N/A"}</span>,
+    },
+    {
+      field: "fuelType",
+      headerName: "Fuel Type",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{params.row?.FuelTypeId?.lookup_value || "N/A"}</span>
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 120,
+      headerClassName: "blue-header",
+      renderCell: (params) => {
+        return (
+          <>
+            <div
+              className="flex items-center justify-center w-6 h-6 cursor-pointer"
+              data-bs-toggle="dropdown"
+            >
+              <MoreVertIcon
+                sx={{ color: "#23538f", cursor: "pointer" }}
+                className="h-100 w-100"
+              />
+            </div>
+
+            {/* Dropdown Menu */}
+            <div
+              className="dropdown-menu border-0 rounded-3"
+              style={{
+                boxShadow:
+                  "rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px",
+              }}
+            >
+              <div className="d-flex flex-column">
+                {/* Edit Action */}
+                <span
+                  className="actionType"
+                  onClick={() => {
+                    console.log(`Edit button clicked`, params.row?._id);
+                  }}
+                >
+                 Edit
+                </span>
+
+                {/* Delete Action */}
+                <span
+                  className="actionType border-bottom-0"
+                  onClick={() => {
+                    console.log(`Delete button clicked`, params.row?._id);
+                  }}
+                >
+                 Delete
+                </span>
+              </div>
+            </div>
+          </>
+        );
+      },
+    },
+  ];
+
+
   const [value, setValue] = useState('68b5428a7c888e09e7af1cc3');
   const [selectedName, setSelectedName] = useState("Individual");
   const [loading, setLoading] = useState(false);
@@ -289,6 +566,8 @@ export default function AssetMasterForm() {
             success: "Individual Asset saved successfully!",
             isLoading: false
           });
+          fetchData(["asset_type"], "AssetType");
+          fetchIndividualTabData();
           resetForm();
         } else {
           const errorMsg = res.response?.message || res.message || "Failed to save individual asset";
@@ -335,6 +614,8 @@ export default function AssetMasterForm() {
             success: "Vehicle Asset saved successfully!",
             isLoading: false
           });
+          fetchData(["asset_type"], "AssetType");
+          fetchIndividualTabData();
           resetForm();
         } else {
           const errorMsg = res.response?.message || res.message || "Failed to save vehicle asset";
@@ -562,7 +843,7 @@ export default function AssetMasterForm() {
                     >
                       <MenuItem value={null}>Asset A</MenuItem>
                       <MenuItem value={null}>Asset B</MenuItem>
-                    
+
                     </Select>
                   </FormControl>
 
@@ -578,11 +859,11 @@ export default function AssetMasterForm() {
                         disableScrollLock: true,
                       }}
                     >
-                     {designationType?.map((el) => (
-                      <MenuItem key={el?._id} value={el?._id}>
-                        {el?.name || 'No Name'}
-                      </MenuItem>
-                    ))}
+                      {designationType?.map((el) => (
+                        <MenuItem key={el?._id} value={el?._id}>
+                          {el?.name || 'No Name'}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
 
@@ -623,11 +904,11 @@ export default function AssetMasterForm() {
                       }}
                     >
 
-                     {fleetType?.map((el) => (
-                      <MenuItem key={el._id} value={el._id}>
-                        {el?.lookup_value || 'No Name'}
-                      </MenuItem>
-                    ))}
+                      {fleetType?.map((el) => (
+                        <MenuItem key={el._id} value={el._id}>
+                          {el?.lookup_value || 'No Name'}
+                        </MenuItem>
+                      ))}
 
                     </Select>
                   </FormControl>
@@ -721,6 +1002,7 @@ export default function AssetMasterForm() {
 
               {/* Submit */}
               <Button
+               disabled={isLoading}
                 type="submit"
                 variant="contained"
                 color="primary"
@@ -731,106 +1013,41 @@ export default function AssetMasterForm() {
             </form>
           </div>
 
-          <div className="bg-white pb-2 rounded-lg  col-span-12 lg:col-span-7 border">
-            <Box sx={{ width: '100%', typography: 'body1' }}>
+          <div className="bg-white pb-2 rounded-lg  col-span-12 lg:col-span-7">
+            <Box sx={{ width: '100%', typography: 'body1', mb: 2 }}>
               <Box sx={{ borderBottom: 2, borderColor: 'divider' }}>
                 <Tabs onChange={handleCatTabChange} aria-label="selectedTab" value={value}>
                   {/* <Tab label="All" value="all" /> */}
                   {AssetType?.map((el) => (
-                    <Tab label={el.name || ""} value={el._id} />
+                    <Tab key={el._id} label={el.name || ""} value={el._id} sx={{fontSize: 16,fontWeight: 'bold'}} />
                   ))}
                 </Tabs>
               </Box>
             </Box>
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm border-collapse">
-                <thead>
-                  <tr className=" text-white text-left rounded-t-2xl" >
-                    {selectedName === "Individual" ? (
-                      <>
-                        <th className="px-1 text-center ps-3 py-2 text-[12px] bg-[#525fe1]" style={{ borderRadius: '7px 0 0 0' }}>Parent Asset ID</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Asset Name</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Gender</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Date_of_Birth</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Date_of_Joining</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Blood Group</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Reporting Asset</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Designation</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]" >Department</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Created_At </th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]" style={{ borderRadius: '0 7px  0 0' }}>Updated_At</th>
-                      </>
-                    ) : (
-                      <>
-                        <th className="px-1 text-center ps-3 py-2 text-[12px] bg-[#525fe1]" style={{ borderRadius: '7px 0 0 0' }}>Parent Asset ID</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Registration No.</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Engine No.</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Chassis No.</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Model</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Make</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Manufacturer</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Year</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Color</th>
-                        <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1] " style={{ borderRadius: '0 7px  0 0' }}>Fuel Type</th>
-                      </>
-                    )}
-                  </tr>
-                </thead>
-                <tbody>
 
-                  {selectedName === "Individual" ? (
-                    loading ? (
-                      <table width={"100%"} height={"100%"}>
-                        <tr>
-                          <td>
-                            <LoadingScreen />
-                          </td>
-                        </tr>
-                      </table>
-                    ) : (
-                      assetData?.map((el, index) => (
-                        <tr key={el._id} className={`${index % 2 === 0 ? " bg-white" : "bg-[#f2f3fc]"
-                          } hover:bg-gray-100 transition`}>
-                          <td className="px-1 text-center py-2 ps-2">{el.AssetTypeId.lookup_value || ''}</td>
-                          {/* <td className="px-1 text-center py-2">{el.AssetTypeId._id || ''}</td> */}
-                          <td className="px-1 text-center py-2">{el.AssetName || ''}</td>
-                          <td className="px-1 text-center py-2">{el.Gender || ''}</td>
-                          <td className="px-1 text-center py-2">{__formatDate(el.DOB) || ''}</td>
-                          <td className="px-1 text-center py-2">{__formatDate(el.DateOfJoining) || ''}</td>
-                          <td className="px-1 text-center py-2">{el.BloodGroup || ''}</td>
-                          <td className="px-1 text-center py-2">{el.ReportingAssetID || ''}</td>
-                          <td className="px-1 text-center py-2">{el?.DesignationTypeId?.lookup_value || ''}</td>
-                          <td className="px-1 text-center py-2">{el.DepartmentTypeId?.lookup_value || ''}</td>
-                          <td className="px-1 text-center py-2">{__formatDate(el.createdAt) || ''}</td>
-                          <td className="px-1 text-center py-2">{__formatDate(el.updatedAt) || ''}</td>
-                        </tr>
-                      )
-                      )
-                    )
-                  ) : (
-                    assetData?.map((el) => (
-                      <tr key={el._id} className="border-b hover:bg-gray-100">
-                        <td className="px-1 text-center py-2">{el?.AssetTypeId?.lookup_value || ''}</td>
-                        {/* <td className="px-1 text-center py-2">{el.parentAssetId || ''}</td> */}
-                        <td className="px-1 text-center py-2">{el.RegistrationNumber || ''}</td>
-                        <td className="px-1 text-center py-2">{el.EngineNumber || ''}</td>
-                        <td className="px-1 text-center py-2">{el.ChassisNumber || ''}</td>
-                        <td className="px-1 text-center py-2">{el.Model || ''}</td>
-                        <td className="px-1 text-center py-2">{el.Make || ''}</td>
-                        <td className="px-1 text-center py-2">{el.Manufacturer || ''}</td>
-                        <td className="px-1 text-center py-2">{el.Year || ''}</td>
-                        <td className="px-1 text-center py-2">{el.Color || ''}</td>
-                        <td className="px-1 text-center py-2">{el?.FuelTypeId?.lookup_value || ''}</td>
-                      </tr>
-                    ))
-                  )}
+            <DataGrid
+              rows={assetData}
+              loading={loading}
+              columns={selectedName === "Individual" ? individualColumns : vehicleColumns}
+              pageSize={10}
+              autoHeight
+              pagination
+              getRowId={(row) => row._id}
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: 10, page: 0 },
+                },
+              }}
+              pageSizeOptions={[10]}
+            />
 
-                </tbody>
-              </table>
-            </div>
+
           </div>
+
+
         </div>
       </div>
+
     </div>
   );
 }
