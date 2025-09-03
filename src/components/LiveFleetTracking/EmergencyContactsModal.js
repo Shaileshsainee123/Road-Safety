@@ -24,9 +24,9 @@ export default function EmergencyContactsModal({ open, onClose, vehicle }) {
 
     return (
       <>
-    <div className="fixed inset-0 z-50 flex items-center justify-center mt-20">
+    <div className="fixed inset-0 z-50 flex items-center justify-center mt-0">
       <div className="absolute inset-0 bg-black/80" onClick={onClose} />
-      <div className="relative w-[900px] max-w-[90vw] bg-white rounded-2xl shadow-xl p-6">
+      <div className="relative w-[900px] max-w-[90vw] max-h-[90vh] bg-white rounded-2xl shadow-xl p-6 overflow-auto">
         <button
           onClick={onClose}
           aria-label="Close"

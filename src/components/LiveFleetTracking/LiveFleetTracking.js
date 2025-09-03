@@ -39,9 +39,9 @@ export default function LiveFleetTracking({ data }) {
     <div className="LiveFleetTracking space">
       {/* Title + Filters */}
       <div>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between flex-col lg:flex-row items-start lg:items-center mb-4">
               <h2 className="text-lg font-semibold">Live Fleet Tracking</h2>
-              <div className="flex items-center gap-4 text-sm text-gray-700">
+              <div className="flex items-center flex-wrap  gap-4 text-sm text-gray-700">
                 <label className="flex items-center font-semibold gap-1">
                   <input 
                   className="w-[20px] h-[20px]"

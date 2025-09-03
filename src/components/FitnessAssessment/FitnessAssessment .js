@@ -40,7 +40,7 @@ const FitnessAssessment = () => {
   return (
     <div className="space">
       {/* Tabs */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -48,7 +48,7 @@ const FitnessAssessment = () => {
             className={`px-4 py-3 rounded-lg font-medium   ${
               activeTab === tab.key
                 ? "bg-[#525fe1] text-white font-semibold"
-                : "bg-[#d5d9f9] text-gray-900 hover:bg-gray-400 bg-gray-300 font-semibold"
+                : "bg-[#d5d9f9] text-gray-900 hover:bg-gray-400 font-semibold"
             }`}
           >
             {tab.label}

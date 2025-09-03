@@ -43,6 +43,7 @@ export default function DashboardLayout({ children }) {
           width: `calc(100% - ${open ? drawerWidth : collapsedWidth}px)`,
           marginLeft: `${open ? drawerWidth : collapsedWidth}px`,
           transition: "width 0.3s ease, margin-left 0.3s ease",
+          zIndex: 10,
         }}
       >
         <TopbarHeader />
@@ -52,7 +53,7 @@ export default function DashboardLayout({ children }) {
         variant="persistent"
         anchor="left"
         open={open}
-        className={`sidebar position-relative bg-[#525fe1] ${
+        className={`sidebar position-relative bg-[#525fe1] z-10 ${
           open ? "open" : "closed"
         }`}
       >
