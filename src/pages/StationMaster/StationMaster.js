@@ -423,7 +423,7 @@ export default function StationMaster() {
       )}
 
       <div className="grid  grid-cols-12 gap-6 w-full mx-auto">
-        <div className="bg-white py-3 px-3 rounded-xl border  col-span-5">
+        <div className="bg-white py-3 px-3 rounded-xl border col-span-12 lg:col-span-5">
           <form onSubmit={__handleSave} className="space-y-5">
             <FormControl fullWidth>
               <InputLabel id="station-type-label">Parent Station ID</InputLabel>
@@ -614,7 +614,7 @@ export default function StationMaster() {
           </form>
         </div>
         {/* Right Side Table */}
-        <div className="bg-white pb-2 rounded-xl col-span-7">
+        <div className="bg-white pb-2 rounded-xl col-span-12 lg:col-span-7">
          <DataGrid
           rows={stationList}
           loading={isLoading}
