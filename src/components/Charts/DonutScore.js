@@ -12,7 +12,7 @@ export default function DonutScore({ driverScore, vehicleScore, behaviourScore, 
   ];
 
   return (
-    <div className="bg-white  p-3 flex items-center ">
+    <div className="bg-white p-3 flex items-center flex-col lg:flex-row">
       {/* LEFT SIDE - Scores */}
       <div className="flex flex-col gap-1 flex-1">
         <div>
