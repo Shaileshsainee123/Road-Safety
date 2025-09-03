@@ -24,8 +24,126 @@ import { HiDotsVertical } from "react-icons/hi";
 
 import { MdDeleteForever } from "react-icons/md";
 import LoadingScreen from "../../components/Loading/LoadingScreen";
+import { DataGrid } from "@mui/x-data-grid";
 export default function StationMaster() {
-
+  // ====================== Individual Columns ======================
+  const columns = [
+    {
+      field: "Parent Station",
+      headerName: "Parent Station",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{params.row?.ParentStationId?.StationName || "N/A"}</span>
+      ),
+    },
+    {
+      field: "Station Type",
+      headerName: "Station Type",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.StationTypeId?.lookup_value || "N/A"}</span>,
+    },
+    {
+      field: "StationName",
+      headerName: "Station Name",
+      width: 120,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.StationName || "N/A"}</span>,
+    },
+    {
+      field: "Address Line 1",
+      headerName: "Address Line 1",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.AddressLine1 || "N/A"}</span>,
+    },
+    {
+      field: "Address Line 2",
+      headerName: "Address Line 2",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.AddressLine2 || "N/A"}</span>,
+    },
+    {
+      field: "PostalCode",
+      headerName: "Postal Code",
+      width: 140,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.PostalCode || "N/A"}</span>,
+    },
+    {
+      field: "lookup_value",
+      headerName: "City",
+      width: 160,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{params.row?.CityId?.lookup_value || "N/A"}</span>,
+    },
+    {
+      field: "designation",
+      headerName: "GeoLocation",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{`${params.row?.GeoLocation.coordinates[0] || "N/A"}, ${params.row?.GeoLocation.coordinates[1] || "N/A"}`}</span>
+      ),
+    },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => (
+        <span>{__formatDate(params.row?.createdAt)}</span>
+      ),
+    },
+    {
+      field: "updatedAt",
+      headerName: "Updated At",
+      width: 150,
+      headerClassName: "blue-header",
+      renderCell: (params) => <span>{__formatDate(params.row?.updatedAt)}</span>,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      headerClassName: "blue-header",
+      width: 120,
+      renderCell: (params) => {
+        return (
+          <>
+            <span>
+              <HiDotsVertical className="cursor-pointer"
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+              />
+              <Menu
+                MenuProps={{
+                  disablePortal: true,
+                  disableScrollLock: true,
+                }}
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              // slotProps={{
+              //   list: {
+              //     'aria-labelledby': 'basic-button',
+              //   },
+              // }}
+              >
+                <MenuItem onClick={handleClose}>Edit</MenuItem>
+                <MenuItem onClick={handleClose}>Delete</MenuItem>
+              </Menu>
+            </span>
+          </>
+        );
+      },
+    }
+  ];
 
   const [state, setState] = useState({
     isLoading: false,
@@ -41,14 +159,14 @@ export default function StationMaster() {
     success: "",
     IsActive: true,
     CityType: [],
-    StationType: [], 
+    StationType: [],
     GeoLocation: {
       type: "Point",
-      coordinates: ["", ""], 
+      coordinates: ["", ""],
     },
 
-  parentStationType: [],
-  stationList: [],
+    parentStationType: [],
+    stationList: [],
   })
   // console.log(state.stationList,"__formatDate")
 
@@ -127,7 +245,7 @@ export default function StationMaster() {
           });
           // Reset form after successful save
           resetForm();
-          //  fetchStations();
+          fetchStations();
         } else {
           const errorMsg = res.response?.message || res.message || "Failed to save station";
           console.error("API Error Response:", res);
@@ -151,11 +269,11 @@ export default function StationMaster() {
           isLoading: false
         });
         toast.error(errorMsg);
-      }) 
+      })
     // setTimeout(() => { 
     //   resetForm();
     // }, 2000); 
-  } 
+  }
 
   const fetchData = async (lookupTypes, stateKey, parent_lookup_id) => {
     updateState({ isLoading: true })
@@ -178,8 +296,8 @@ export default function StationMaster() {
     __postApiData("/api/v1/admin/StationList", { page: 1, limit: 10, search: "" })
       .then((res) => {
         // console.log("  __postApiData Response:", res.d);
-        updateState({ isLoading: false }); 
-        
+        updateState({ isLoading: false });
+
         if (res.response && res.response.response_code === "200") {
           updateState({
             stationList: res.data.list || [],
@@ -204,13 +322,13 @@ export default function StationMaster() {
     // });
 
   };
-    const fetchStationsParent = () => {
+  const fetchStationsParent = () => {
     updateState({ isLoading: true });
-    __postApiData("/api/v1/admin/StationList", { })
+    __postApiData("/api/v1/admin/StationList", {})
       .then((res) => {
         // console.log("  __postApiData Response:", res.d);
-        updateState({ isLoading: false }); 
-        
+        updateState({ isLoading: false });
+
         if (res.response && res.response.response_code === "200") {
           updateState({
             parentStationType: res.data.list || [],
@@ -238,7 +356,7 @@ export default function StationMaster() {
 
   useEffect(() => {
     fetchData(["city"], "CityType");
-    fetchData(["station_type"], "StationType"); 
+    fetchData(["station_type"], "StationType");
     fetchStations();
     fetchStationsParent();
   }, []);
@@ -266,7 +384,7 @@ export default function StationMaster() {
     updateState({ [name]: value });
   };
 
-    const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -304,10 +422,10 @@ export default function StationMaster() {
         </Alert>
       )}
 
-      <div className="grid  grid-cols-12 gap-6 w-full mx-auto">  
+      <div className="grid  grid-cols-12 gap-6 w-full mx-auto">
         <div className="bg-white py-3 px-3 rounded-xl border  col-span-5">
-          <form onSubmit={__handleSave} className="space-y-5"> 
-             <FormControl fullWidth>
+          <form onSubmit={__handleSave} className="space-y-5">
+            <FormControl fullWidth>
               <InputLabel id="station-type-label">Parent Station ID</InputLabel>
               <Select
                 MenuProps={{
@@ -316,7 +434,7 @@ export default function StationMaster() {
                 }}
                 labelId="station-type-label"
                 name="ParentStationId"
-                value={ParentStationId || "" }
+                value={ParentStationId || ""}
                 onChange={handleChange}
                 label="ParentStationId"
                 required
@@ -326,11 +444,11 @@ export default function StationMaster() {
                 </MenuItem>
                 {parentStationType?.map((el) => (
                   <MenuItem key={el._id} value={el._id}>
-                    {el?.StationName|| el?.lookup_value|| 'No Name'}
+                    {el?.StationName || el?.lookup_value || 'No Name'}
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl> 
+            </FormControl>
 
             <FormControl fullWidth>
               <InputLabel id="station-type-label">Station Type *</InputLabel>
@@ -493,91 +611,28 @@ export default function StationMaster() {
                 />
               )}
             </Button>
-          </form> 
-        </div> 
+          </form>
+        </div>
         {/* Right Side Table */}
         <div className="bg-white pb-2 rounded-xl border col-span-7">
-          <div className="overflow-x-auto">
-       
-            <table className="min-w-full text-sm border-collapse">
-              <thead>
-                <tr className=" text-white text-left rounded-t-2xl" >
-                  <th className="px-1 text-center ps-3 py-2 text-[12px] bg-[#525fe1]" style={{ borderRadius: '7px 0 0 0' }}>Parent Station</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Station Type</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Station Name</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Address Line 1</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Address Line 2</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">Postal Code</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">City</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1]">GeoLocation</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1] ">Created At</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1] " >Updated At</th>
-                  <th className="px-1 text-center py-2 text-[12px] bg-[#525fe1] " style={{ borderRadius: '0 7px  0 0' }}>Actions</th>
-                </tr>
-              </thead> 
-              <tbody> 
-                  {isLoading ? ( 
-                       <table width={"100%"} height={"100%"}>
-                        <tr>
-                          <td>
-                            <LoadingScreen />
-                          </td>
-                        </tr>
-                       </table> 
-                    ) : (
-                  stationList.map((item, index) => (
-                  <tr key={item._id} className={`${index % 2 === 0 ? " bg-white" : "bg-[#f2f3fc]"
-                    } hover:bg-gray-100 transition`}> 
-                    <td className="px-2 py-2 text-[12px] text-center"> {item.ParentStationId?.StationName || ""} </td>
-                    <td className="px-2 py-2 text-[12px]"> {item?.StationTypeId?.lookup_value} </td>
-                    <td className="px-2 py-2 text-[12px]"> {item.StationName} </td>
-                    <td className="px-2 py-2 text-[12px]"> {item.AddressLine1} </td>
-                    <td className="px-2 py-2 text-[12px]"> {item.AddressLine2} </td>
-                    <td className="px-2 py-2 text-[12px]"> {item.PostalCode} </td>
-                    <td className="px-2 py-2 text-[12px]"> {item?.CityId?.lookup_value || ""} </td>
-                    <td className="px-2 py-2 text-[12px]"> {item.GeoLocation.coordinates[0]}, {item.GeoLocation.coordinates[1]} </td>
-                    <td className="px-2 py-2 text-[12px]"> {( __formatDate(item.createdAt))} </td>
-                    <td className="px-2 py-2 text-[12px]"> {( __formatDate(item.updatedAt))} </td> 
-                    <td className="px-2 py-2 text-[16px]"> {<span>
-                      <HiDotsVertical className="cursor-pointer" 
-                        id="basic-button"
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      />
-                      <Menu
-                        MenuProps={{
-                          disablePortal: true,
-                          disableScrollLock: true,
-                        }}
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        // slotProps={{
-                        //   list: {
-                        //     'aria-labelledby': 'basic-button',
-                        //   },
-                        // }}
-                      >
-                        <MenuItem onClick={handleClose}>Edit</MenuItem>
-                        <MenuItem onClick={handleClose}>Delete</MenuItem>
-                      </Menu>
-                    </span>}
-                    </td>
-                  </tr>
-
-                ))
-                 )} 
-               
-              </tbody>
-            </table>
-                 
-           
-          </div>
-        </div> 
+         <DataGrid
+          rows={stationList}
+          loading={isLoading}
+          columns={columns}
+          pageSize={10}
+          autoHeight
+          pagination
+          getRowId={(row) => row._id}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10, page: 0 },
+            },
+          }}
+          pageSizeOptions={[10]}
+        />
+        </div>
       </div>
+
     </div>
   );
 }
