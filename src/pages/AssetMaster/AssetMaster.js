@@ -124,7 +124,7 @@ export default function AssetMasterForm() {
               data-bs-toggle="dropdown"
             >
               <MoreVertIcon
-                sx={{ color:"gray", cursor: "pointer", display:"flex" , justifyContent: "center" ,alignItems:"center"}}
+                sx={{ color:"gray", cursor: "pointer", display:"flex" , justifyContent: "center" ,alignItems:"center",marginTop:2}}
                 className="h-6 w-6"
               />
             </div>
@@ -142,7 +142,7 @@ export default function AssetMasterForm() {
                 <div
                   className="font-normal text-base px-2 py-2 cursor-pointer border border-bottom-1"
                   onClick={() => {
-                    console.log(`Edit button clicked`, params.row?._id);
+                    alert(`Edit button clicked ${params.row?._id}`);
                   }}
                 >
                   Edit
@@ -152,7 +152,7 @@ export default function AssetMasterForm() {
                 <div
                   className="font-normal text-base px-2 py-2 cursor-pointer"
                   onClick={() => {
-                    console.log(`Delete button clicked`, params.row?._id);
+                   alert(`Delete button clicked ${params.row?._id}`)
                   }}
                 >
                    Delete
@@ -256,7 +256,7 @@ export default function AssetMasterForm() {
               data-bs-toggle="dropdown"
             >
               <MoreVertIcon
-                sx={{ color:"gray", cursor: "pointer", display:"flex" , justifyContent: "center" ,alignItems:"center"}}
+                sx={{ color:"gray", cursor: "pointer", display:"flex" , justifyContent: "center" ,alignItems:"center",marginTop:2}}
                 className="h-6 w-6"
               />
             </div>
@@ -274,7 +274,7 @@ export default function AssetMasterForm() {
                 <span
                   className="font-normal text-base px-2 py-2 cursor-pointer border border-bottom-1"
                   onClick={() => {
-                    console.log(`Edit button clicked`, params.row?._id);
+                    alert(`Edit button clicked ${params.row?._id}`)
                   }}
                 >
                  Edit
@@ -284,7 +284,7 @@ export default function AssetMasterForm() {
                 <span
                   className="font-normal text-base px-2 py-2 cursor-pointer"
                   onClick={() => {
-                    console.log(`Delete button clicked`, params.row?._id);
+                    alert(`Delete button clicked ${params.row?._id}`);
                   }}
                 >
                  Delete

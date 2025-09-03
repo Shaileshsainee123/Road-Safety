@@ -113,7 +113,7 @@ export default function StationMaster() {
         return (
           <>
             <span>
-              <HiDotsVertical className="cursor-pointer"
+              <HiDotsVertical className="cursor-pointer mt-3 ms-3"
                 id="basic-button"
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
@@ -135,8 +135,8 @@ export default function StationMaster() {
               //   },
               // }}
               >
-                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Delete</MenuItem>
+                <MenuItem onClick={() => {handleClose(); alert(`Edit button clicked ${params.row?._id}`)}}>Edit</MenuItem>
+                <MenuItem onClick={() => {handleClose(); alert(`Delete button clicked ${params.row?._id}`);}}>Delete</MenuItem>
               </Menu>
             </span>
           </>
@@ -614,7 +614,7 @@ export default function StationMaster() {
           </form>
         </div>
         {/* Right Side Table */}
-        <div className="bg-white pb-2 rounded-xl border col-span-7">
+        <div className="bg-white pb-2 rounded-xl col-span-7">
          <DataGrid
           rows={stationList}
           loading={isLoading}
